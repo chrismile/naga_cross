@@ -1,0 +1,11 @@
+[package]
+name = "naga_cross"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+naga = { version = "22.1.0", features  = ["glsl-in", "wgsl-out"] }
+
+[lib]
+name = "naga_cross"
+crate-type = ["cdylib", "staticlib"]

@@ -1,0 +1,65 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  generate:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            target_name: x86_64-gnu
+          - os: ubuntu-latest
+            target: wasm32-unknown-unknown
+            target_name: wasm32
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            target_name: x86_64-windows-msvc
+
+    name: "${{ github.workflow }} target ${{ matrix.target_name }}"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      # Targets can be queried with "rustc --print target-list".
+      - name: Install dependencies
+        run: |
+          cargo install cbindgen
+          if [ "${{ matrix.target_name }}" == "wasm32" ]; then
+              cargo install wasm-bindgen-cli
+          fi
+          rustup target add ${{ matrix.target }}
+
+      # Targets can be queried with "rustc --print target-list".
+      - name: Build target
+        run: |
+          cargo build --lib --release --target=${{ matrix.target }}
+
+      - name: Copy files
+        shell: bash
+        run: |
+          proj_name=${{ github.event.repository.name }}
+          mkdir dist
+          mkdir dist/lib
+          mkdir dist/lib/cmake
+          mkdir dist/lib/cmake/${proj_name}
+          mkdir dist/include
+          cp "CMake/${proj_name}Config.cmake" "dist/lib/cmake/${proj_name}/"
+          if [ "${{ matrix.target_name }}" == "wasm32" ]; then
+              cbindgen --config cbindgen.toml --crate ${proj_name} --output dist/include/${proj_name}.h
+          elif [ "$RUNNER_OS" == "Linux" ]; then
+              cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
+              cp "target/${{ matrix.target }}/release/lib${proj_name}.so" dist/lib/
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+              mkdir dist/bin
+              cp "target/${{ matrix.target }}/release/${proj_name}.lib" dist/lib/
+              cp "target/${{ matrix.target }}/release/${proj_name}.dll" dist/bin/
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+              cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
+              cp "target/${{ matrix.target }}/release/lib${proj_name}.dylib" dist/lib/
+          fi
