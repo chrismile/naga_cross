@@ -1,8 +1,15 @@
 name: Handle Release
 
+#on:
+#  push:
+#    tags:
+#      - "v*.*.*"
 on:
   release:
     types: [created]
+
+permissions:
+    contents: write
 
 jobs:
   generate:
@@ -38,6 +45,10 @@ jobs:
 
     name: "Create release-artifacts target ${{ matrix.target_name }}"
     runs-on: ${{ matrix.os }}
+
+    env:
+      artifact_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-${{ matrix.target_name }}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -88,13 +99,20 @@ jobs:
               cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
               cp "target/${{ matrix.target }}/release/lib${proj_name}.dylib" dist/lib/
           fi
+          mv dist ${{ env.artifact_name }}
 
-      - name: Upload
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- name: Create archive (Unix)
+      #  shell: bash
+      #  run: |
+      #    zip -r ${{ env.artifact_name }}.zip ${{ env.artifact_name }}
+      - uses: vimtor/action-zip@v1.2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist
-          asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-${{ matrix.target_name }}
-          asset_content_type: binary/octet-stream
+          files: ${{ env.artifact_name }}/
+          dest: ${{ env.artifact_name }}.zip
+
+      # Needs "Read and write permission" under "Workflow permissions" on https://github.com/chrismile/naga_cross/settings/actions.
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        #if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ env.artifact_name }}.zip

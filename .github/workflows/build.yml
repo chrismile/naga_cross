@@ -90,3 +90,10 @@ jobs:
               cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
               cp "target/${{ matrix.target }}/release/lib${proj_name}.dylib" dist/lib/
           fi
+
+      #- name: Upload
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}-${{ matrix.target_name }}
+      #    path: dist/
+      #    retention-days: 14
