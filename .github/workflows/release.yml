@@ -80,7 +80,7 @@ jobs:
               mkdir dist/bin
               cp "target/${{ matrix.target }}/release/${proj_name}.dll" dist/bin/
               if [ "${{ matrix.target_name }}" == "x86_64-windows-gnu" ]; then
-                  cp "target/${{ matrix.target }}/release/${proj_name}.a" dist/lib/
+                  cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
               else
                   cp "target/${{ matrix.target }}/release/${proj_name}.lib" dist/lib/
               fi
