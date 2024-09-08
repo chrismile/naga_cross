@@ -48,8 +48,10 @@ jobs:
           mkdir dist/lib/cmake/${proj_name}
           mkdir dist/include
           cp "CMake/${proj_name}Config.cmake" "dist/lib/cmake/${proj_name}/"
+          cbindgen --config cbindgen.toml --crate ${proj_name} --output dist/include/${proj_name}.h
           if [ "${{ matrix.target_name }}" == "wasm32" ]; then
-              cbindgen --config cbindgen.toml --crate ${proj_name} --output dist/include/${proj_name}.h
+              cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
+              cp "target/${{ matrix.target }}/release/${proj_name}.wasm" dist/lib/
           elif [ "$RUNNER_OS" == "Linux" ]; then
               cp "target/${{ matrix.target }}/release/lib${proj_name}.a" dist/lib/
               cp "target/${{ matrix.target }}/release/lib${proj_name}.so" dist/lib/
