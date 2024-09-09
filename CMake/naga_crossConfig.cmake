@@ -70,20 +70,20 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
         set_target_properties(naga_cross::static PROPERTIES
             IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/libnaga_cross.a"
         )
-        # If we don't add some library dependencies for Rust, we get lots of errors of the form:
-        # "[...]/library\std\src\sys\pal\windows/net.rs:39:(.text+0x1840): undefined reference to `WSAStartup'"
-        target_link_libraries(naga_cross::static INTERFACE ws2_32)
-        target_link_libraries(naga_cross::shared INTERFACE ws2_32)
-        # "[...]/library\std\src\sys\pal\windows/c.rs:275:(.text+0x3e302): undefined reference to `NtReadFile'"
-        target_link_libraries(naga_cross::static INTERFACE ntdll)
-        target_link_libraries(naga_cross::shared INTERFACE ntdll)
-        # "[...]/library\std\src\sys\pal\windows/os.rs:331:(.text+0x21523): undefined reference to `GetUserProfileDirectoryW'"
-        target_link_libraries(naga_cross::static INTERFACE userenv)
-        target_link_libraries(naga_cross::shared INTERFACE userenv)
     endif()
     set_target_properties(naga_cross::shared PROPERTIES
         IMPORTED_LOCATION "${_IMPORT_PREFIX}/bin/libnaga_cross.dll"
     )
+    # If we don't add some library dependencies for Rust, we get lots of errors of the form:
+    # "[...]/library\std\src\sys\pal\windows/net.rs:39:(.text+0x1840): undefined reference to `WSAStartup'"
+    target_link_libraries(naga_cross::static INTERFACE ws2_32)
+    target_link_libraries(naga_cross::shared INTERFACE ws2_32)
+    # "[...]/library\std\src\sys\pal\windows/c.rs:275:(.text+0x3e302): undefined reference to `NtReadFile'"
+    target_link_libraries(naga_cross::static INTERFACE ntdll)
+    target_link_libraries(naga_cross::shared INTERFACE ntdll)
+    # "[...]/library\std\src\sys\pal\windows/os.rs:331:(.text+0x21523): undefined reference to `GetUserProfileDirectoryW'"
+    target_link_libraries(naga_cross::static INTERFACE userenv)
+    target_link_libraries(naga_cross::shared INTERFACE userenv)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(naga_cross::static PROPERTIES
         IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/libnaga_cross.a"
