@@ -5,3 +5,22 @@ accepted = [
     "BSD-3-Clause",
     "Unicode-DFS-2016",
 ]
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+    "wasm32-unknown-unknown",
+    "x86_64-pc-windows-msvc",
+    "x86_64-pc-windows-gnu",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+
+[naga_cross.clarify]
+license = "BSD-2-Clause"
+
+[[naga_cross.clarify.files]]
+path = 'LICENSE'
+license = "BSD-2-Clause"
+checksum = '4d8cd5e02b722d637312fb9b778fbd8fafa485b1d3a8c267756c7d3be160270b'
+start = 'BSD 2-Clause License'
+end = 'OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.'

@@ -48,3 +48,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+------------------------------------------------------------------------------
+
+Dependencies of Naga may be covered by other licenses. Please use the command
+"cargo about generate about.hbs > dist/docs/LICENSE-naga_cross.txt"
+to generate an extensive list of all licenses when shipping compiled versions
+of naga_cross.

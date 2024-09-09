@@ -25,3 +25,4 @@ naga_cross.h
 
 # The license of all dependencies is accumulated by 'cargo about' and can be dependent on the time of compilation.
 LICENSE-naga_cross-deps.html
+LICENSE-naga_cross.txt
