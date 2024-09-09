@@ -55,7 +55,7 @@ jobs:
       # Targets can be queried with "rustc --print target-list".
       - name: Install dependencies
         run: |
-          cargo install cbindgen
+          cargo install cbindgen cargo-about
           rustup target add ${{ matrix.target }}
 
       - name: Build target
