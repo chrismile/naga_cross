@@ -59,10 +59,18 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         IMPORTED_NO_SONAME TRUE
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-    set_target_properties(naga_cross::static PROPERTIES
-        IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/naga_cross.lib"
-        IMPORTED_IMPLIB "${_IMPORT_PREFIX}/lib/naga_cross.lib"
-    )
+    if(EXISTS "${_IMPORT_PREFIX}/lib/naga_cross.lib")
+        # MSVC
+        set_target_properties(naga_cross::static PROPERTIES
+            IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/naga_cross.lib"
+            IMPORTED_IMPLIB "${_IMPORT_PREFIX}/lib/naga_cross.lib"
+        )
+    else()
+        # E.g., MinGW
+        set_target_properties(naga_cross::static PROPERTIES
+            IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/libnaga_cross.a"
+        )
+    endif()
     set_target_properties(naga_cross::shared PROPERTIES
         IMPORTED_LOCATION "${_IMPORT_PREFIX}/bin/libnaga_cross.dll"
     )
