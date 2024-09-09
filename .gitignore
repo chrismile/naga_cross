@@ -20,4 +20,8 @@ Cargo.lock
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 
+# The headers are automatically generated using 'cbindgen'.
 naga_cross.h
+
+# The license of all dependencies is accumulated by 'cargo about' and can be dependent on the time of compilation.
+LICENSE-naga_cross-deps.html

@@ -75,10 +75,13 @@ jobs:
         run: |
           proj_name=${{ github.event.repository.name }}
           mkdir dist
+          mkdir dist/docs
+          mkdir dist/include
           mkdir dist/lib
           mkdir dist/lib/cmake
           mkdir dist/lib/cmake/${proj_name}
-          mkdir dist/include
+          cp LICENSE dist/docs/LICENSE-naga_cross.txt
+          cargo about generate about.hbs > dist/docs/LICENSE-naga_cross-deps.html
           cp "CMake/${proj_name}Config.cmake" "dist/lib/cmake/${proj_name}/"
           cbindgen --config cbindgen.toml --crate ${proj_name} --output dist/include/${proj_name}.h
           if [ "${{ matrix.target_name }}" == "wasm32" ]; then
