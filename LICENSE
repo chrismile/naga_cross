@@ -52,6 +52,5 @@ SOFTWARE.
 ------------------------------------------------------------------------------
 
 Dependencies of Naga may be covered by other licenses. Please use the command
-"cargo about generate about.hbs > dist/docs/LICENSE-naga_cross.txt"
-to generate an extensive list of all licenses when shipping compiled versions
-of naga_cross.
+"cargo about generate about.hbs > LICENSE-naga_cross.txt" to generate an
+extensive list of all licenses when shipping compiled versions of naga_cross.

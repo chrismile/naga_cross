@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 
 The following license applies to the this list of dependencies:
 {{#each used_by}}
-- {{crate.name}}(v{{crate.version}})
+- {{crate.name}} {{crate.version}} ({{#if crate.repository}}{{crate.repository}}{{else}}https://crates.io/crates/{{crate.name}}{{/if}})
 {{/each}}
 
 {{{text}}}
