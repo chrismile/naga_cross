@@ -88,7 +88,7 @@ pub unsafe extern "C" fn naga_cross_glsl_to_wgsl(
     let module_opt = frontend.parse(&options, &glsl_string);
     if module_opt.is_err() {
         (*result).succeeded = false;
-        (*result).error_string = CString::into_raw(CString::new(module_opt.unwrap_err().to_string()).unwrap());
+        (*result).error_string = CString::into_raw(CString::new(module_opt.unwrap_err().emit_to_string(&glsl_string)).unwrap());
         return;
     }
     let module = module_opt.unwrap();
@@ -99,7 +99,7 @@ pub unsafe extern "C" fn naga_cross_glsl_to_wgsl(
     ).validate(&module);
     if module_info_opt.is_err() {
         (*result).succeeded = false;
-        (*result).error_string = CString::into_raw(CString::new(module_info_opt.unwrap_err().to_string()).unwrap());
+        (*result).error_string = CString::into_raw(CString::new(module_info_opt.unwrap_err().emit_to_string(&glsl_string)).unwrap());
         return;
     }
     let module_info = module_info_opt.unwrap();
