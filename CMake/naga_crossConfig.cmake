@@ -32,24 +32,25 @@ get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
 set(naga_cross_VERSION 0.1.0)
 
 add_library(naga_cross::static STATIC IMPORTED GLOBAL)
-add_library(naga_cross::shared SHARED IMPORTED GLOBAL)
-
-#target_include_directories(naga_cross::static INTERFACE "${_IMPORT_PREFIX}/include")
-#target_include_directories(naga_cross::shared INTERFACE "${_IMPORT_PREFIX}/include")
 set_target_properties(naga_cross::static PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
 )
-set_target_properties(naga_cross::shared PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
-)
+
+if (NOT EMSCRIPTEN)
+    add_library(naga_cross::shared SHARED IMPORTED GLOBAL)
+    set_target_properties(naga_cross::shared PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+    )
+endif()
 
 if (EMSCRIPTEN)
     set_target_properties(naga_cross::static PROPERTIES
         IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/libnaga_cross.a"
     )
-    set_target_properties(naga_cross::shared PROPERTIES
-        IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/naga_cross.wasm"
-    )
+    # https://github.com/emscripten-core/emscripten/issues/17804
+    #set_target_properties(naga_cross::shared PROPERTIES
+    #    IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/naga_cross.wasm"
+    #)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set_target_properties(naga_cross::static PROPERTIES
         IMPORTED_LOCATION "${_IMPORT_PREFIX}/lib/libnaga_cross.a"
