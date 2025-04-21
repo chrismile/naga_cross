@@ -3,6 +3,7 @@ accepted = [
     "MIT",
     "BSD-2-Clause",
     "BSD-3-Clause",
+    "Unicode-3.0",
     "Unicode-DFS-2016",
 ]
 targets = [
